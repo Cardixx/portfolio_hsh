@@ -1,14 +1,26 @@
 import { motion } from 'framer-motion'
 
-const skills = [
-  'Editorial Photography',
-  'Portrait Photography',
-  'Documentary',
-  'Commercial Campaigns',
-  'Art Direction',
-  'Visual Storytelling',
-  'Photo Editing',
-  'Creative Direction',
+const skillGroups = [
+  {
+    label: 'Frontend',
+    items: ['React.js', 'JavaScript ES6+', 'HTML5', 'CSS3', 'Responsive Design', 'TailwindCSS'],
+  },
+  {
+    label: 'Backend',
+    items: ['Laravel', 'Node.js', 'REST APIs', 'JWT Authentication', 'Express'],
+  },
+  {
+    label: 'Databases',
+    items: ['MySQL', 'PostgreSQL', 'UML Design', 'Database Modeling'],
+  },
+  {
+    label: 'Tools & DevOps',
+    items: ['Git', 'GitHub', 'Docker (basic)', 'CI/CD (basic)', 'Postman'],
+  },
+  {
+    label: 'Other',
+    items: ['Web Security', 'MVC Architecture', 'Performance Optimization', 'Clean Code'],
+  },
 ]
 
 const fadeInUp = {
@@ -20,35 +32,56 @@ const fadeInUp = {
 
 export function Skills() {
   return (
-    <section id="skills" className="section-padding bg-[#0d0d0d]">
-      <div className="max-w-7xl mx-auto">
-        {/* Section Title */}
-        <motion.div {...fadeInUp} className="mb-16">
-          <span className="text-sm text-gray-500 tracking-widest uppercase">Expertise</span>
-          <div className="w-6 h-px bg-gray-600 mt-2" />
+    <section id="skills" className="section-padding relative bg-card/30">
+      <div className="absolute top-20 right-0 w-96 h-96 rounded-full bg-secondary/10 blur-3xl pointer-events-none" />
+
+      <div className="max-w-6xl mx-auto relative">
+        <motion.div {...fadeInUp} className="mb-12 md:mb-16">
+          <span className="font-mono text-xs text-primary tracking-widest uppercase inline-flex items-center gap-2">
+            <span className="w-8 h-px bg-primary" />
+            02 / Stack
+          </span>
         </motion.div>
 
         <motion.h2
           {...fadeInUp}
-          className="font-display text-[10vw] lg:text-section leading-none tracking-tight mb-12 lg:mb-20"
+          className="font-display text-5xl md:text-7xl lg:text-8xl tracking-tighter mb-16 md:mb-20"
         >
-          SKILLS
+          Skills &<br />
+          <span className="text-gradient">Technologies</span>
         </motion.h2>
 
-        {/* Skills List */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-4 lg:gap-y-6">
-          {skills.map((skill, index) => (
+        <div className="space-y-12 md:space-y-16">
+          {skillGroups.map((group, i) => (
             <motion.div
-              key={skill}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="border-b border-gray-800 pb-4"
+              key={group.label}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ duration: 0.6, delay: i * 0.1 }}
+              className="grid md:grid-cols-12 gap-6 md:gap-8 items-start border-t border-border pt-8 md:pt-12"
             >
-              <span className="text-lg md:text-xl lg:text-2xl text-gray-300 font-light">
-                {skill}
-              </span>
+              <div className="md:col-span-3">
+                <p className="font-mono text-xs text-muted-foreground tracking-widest uppercase mb-1">
+                  0{i + 1}
+                </p>
+                <h3 className="text-xl md:text-2xl text-foreground font-medium">{group.label}</h3>
+              </div>
+              <div className="md:col-span-9 flex flex-wrap gap-2 md:gap-3">
+                {group.items.map((skill, j) => (
+                  <motion.span
+                    key={skill}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: j * 0.05 }}
+                    whileHover={{ scale: 1.05, borderColor: 'hsl(var(--primary))' }}
+                    className="px-4 py-2 rounded-full border border-border bg-background/50 backdrop-blur text-sm text-foreground/90 hover:text-primary hover:border-primary/60 hover:bg-primary/5 transition-all cursor-default font-mono"
+                  >
+                    {skill}
+                  </motion.span>
+                ))}
+              </div>
             </motion.div>
           ))}
         </div>

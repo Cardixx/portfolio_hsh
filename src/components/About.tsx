@@ -9,117 +9,60 @@ const fadeInUp = {
 
 export function About() {
   return (
-    <section id="about" className="section-padding">
-      <div className="max-w-7xl mx-auto">
-        {/* Section Label */}
-        <motion.div {...fadeInUp} className="mb-16">
-          <span className="text-sm text-gray-500 tracking-widest uppercase">About Bruce</span>
-          <div className="w-6 h-px bg-gray-600 mt-2" />
+    <section id="about" className="section-padding relative">
+      <div className="absolute top-1/2 -left-40 w-80 h-80 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
+
+      <div className="max-w-6xl mx-auto relative">
+        <motion.div {...fadeInUp} className="mb-12 md:mb-16">
+          <span className="font-mono text-xs text-primary tracking-widest uppercase inline-flex items-center gap-2">
+            <span className="w-8 h-px bg-primary" />
+            01 / About
+          </span>
         </motion.div>
 
-        {/* First Block */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-24 mb-24 lg:mb-32">
-          <motion.div
-            {...fadeInUp}
-            className="order-2 lg:order-1"
-          >
-            <img
-              src="https://images.pexels.com/photos/2608517/pexels-photo-2608517.jpeg?auto=compress&cs=tinysrgb&w=1200"
-              alt="Early work - Street photography"
-              className="w-full h-auto grayscale"
-            />
-            <p className="mt-4 text-xs text-gray-500 tracking-widest uppercase">
-              PARSONS SCHOOL OF DESIGN - NEW YORK / USA
-            </p>
-          </motion.div>
-
-          <motion.div
-            {...fadeInUp}
-            transition={{ ...fadeInUp.transition, delay: 0.2 }}
-            className="order-1 lg:order-2 flex items-center"
-          >
-            <p className="text-base lg:text-lg text-gray-300 leading-relaxed">
-              It may not be obvious, but Bruce studied computer science at MIT, 
-              with a minor in visual arts. Preferring lenses to algorithms, 
-              he quickly abandoned a promising tech career to study Photography 
-              and Visual Storytelling at Parsons School of Design in New York.
-            </p>
-          </motion.div>
-        </div>
-
-        {/* Quote Block */}
-        <motion.div
+        <motion.h2
           {...fadeInUp}
-          className="mb-24 lg:mb-32"
+          className="font-display text-5xl md:text-7xl lg:text-8xl tracking-tighter mb-12 md:mb-16 leading-[0.95]"
         >
-          <h2 className="font-display text-[8vw] lg:text-section leading-none tracking-tight text-gray-300">
-            "NAMED BY THE<br />
-            <span className="text-white underline underline-offset-8">2023 APERTURE AWARDS</span><br />
-            AS ONE OF THE TOP TEN<br />
-            PHOTOGRAPHERS IN THE WORLD."
-          </h2>
-          <p className="mt-6 text-sm text-gray-500 tracking-widest uppercase">
-            GLOBAL PHOTOGRAPHY<br />
-            DIRECTOR RANK
-          </p>
-        </motion.div>
+          Building the web,<br />
+          <span className="text-gradient">one commit at a time.</span>
+        </motion.h2>
 
-        {/* Second Block */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-24 mb-24 lg:mb-32">
-          <motion.div
-            {...fadeInUp}
-            className="flex items-center lg:text-right"
-          >
-            <p className="text-base lg:text-lg text-gray-300 leading-relaxed">
-              Bruce spent a little over a year in New York before moving to 
-              London as a Junior Photographer for Magnum Photos. He met some 
-              incredible people at the legendary agency, and they're still 
-              friends to this day.
+        <div className="grid md:grid-cols-12 gap-8 md:gap-12">
+          <motion.div {...fadeInUp} className="md:col-span-7 space-y-6 text-base md:text-lg text-muted-foreground leading-relaxed">
+            <p>
+              I'm a <span className="text-foreground">Computer Science student</span> passionate
+              about web development and digital solutions. My focus is on building <span className="text-primary">secure</span> and <span className="text-primary">scalable</span> web applications
+              that solve real problems.
+            </p>
+            <p>
+              Capable of developing full-stack systems with a user-centered approach — I move
+              comfortably between crafting clean React interfaces and architecting robust
+              Laravel & Node.js APIs.
+            </p>
+            <p>
+              I care deeply about <span className="text-foreground">code quality</span>, <span className="text-foreground">performance</span>, and writing software
+              that I'd be proud to maintain six months later.
             </p>
           </motion.div>
 
-          <motion.div
-            {...fadeInUp}
-            transition={{ ...fadeInUp.transition, delay: 0.2 }}
-          >
-            <img
-              src="https://images.pexels.com/photos/1264210/pexels-photo-1264210.jpeg?auto=compress&cs=tinysrgb&w=1200"
-              alt="Magnum Photos Office"
-              className="w-full h-auto grayscale hover:grayscale-0 transition-all duration-700"
-            />
-            <p className="mt-4 text-xs text-gray-500 tracking-widest uppercase">
-              MAGNUM PHOTOS - LONDON / UK
-            </p>
-          </motion.div>
-        </div>
-
-        {/* Third Block */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-24">
-          <motion.div {...fadeInUp}>
-            <img
-              src="https://images.pexels.com/photos/3062541/pexels-photo-3062541.jpeg?auto=compress&cs=tinysrgb&w=1200"
-              alt="Bruce shooting for National Geographic"
-              className="w-full h-auto grayscale"
-            />
-            <p className="mt-4 text-xs text-gray-500 tracking-widest uppercase">
-              SHOOTING FOR NATIONAL GEOGRAPHIC - PATAGONIA / AR<br />
-              (2019)
-            </p>
-          </motion.div>
-
-          <motion.div
-            {...fadeInUp}
-            transition={{ ...fadeInUp.transition, delay: 0.2 }}
-            className="flex items-center"
-          >
-            <p className="text-base lg:text-lg text-gray-300 leading-relaxed">
-              From London, Bruce moved to Berlin with VII Photo Agency. Where he 
-              worked under a great Art Director, Hans Mueller. From there he 
-              went on to build a truly global career, first as Staff Photographer 
-              then as Creative Director for the likes of National Geographic, 
-              Time Magazine, and The New York Times, before finally going 
-              independent in 2020.
-            </p>
+          <motion.div {...fadeInUp} transition={{ ...fadeInUp.transition, delay: 0.2 }} className="md:col-span-5">
+            <div className="border border-border rounded-lg p-6 md:p-8 bg-card/50 backdrop-blur space-y-6">
+              <div>
+                <p className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-2">Currently</p>
+                <p className="text-foreground">Open to junior dev opportunities</p>
+              </div>
+              <div className="h-px bg-border" />
+              <div>
+                <p className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-2">Languages</p>
+                <p className="text-foreground">French · English · Malagasy</p>
+              </div>
+              <div className="h-px bg-border" />
+              <div>
+                <p className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-2">Focus</p>
+                <p className="text-foreground">Full-stack web · APIs · Security</p>
+              </div>
+            </div>
           </motion.div>
         </div>
       </div>

@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 
 export function useScrollVisibility(delay: number = 150) {
   const [isVisible, setIsVisible] = useState(true)
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const lastScrollY = useRef(0)
 
   useEffect(() => {
