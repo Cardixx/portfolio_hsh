@@ -1,6 +1,15 @@
 import { motion } from 'framer-motion'
 
 const projects = [
+    {
+    title: 'Secure REST API',
+    subtitle: 'Auth Service',
+    description: 'JWT authentication and user management following REST best practices, with rate limiting and validation.',
+    stack: ['Node.js', 'Laravel', 'JWT', 'PostgreSQL'],
+    accent: 'from-primary/30 to-accent/30',
+    tag: 'Backend',
+    year: '2024',
+  },
   {
     title: 'Port Security Management Platform',
     subtitle: 'SMMC',
@@ -8,7 +17,7 @@ const projects = [
     stack: ['React', 'Laravel', 'MySQL', 'JWT'],
     accent: 'from-primary/30 to-secondary/30',
     tag: 'Featured',
-    year: '2024',
+    year: '2025',
   },
   {
     title: 'SaaS Commercial Management',
@@ -26,17 +35,9 @@ const projects = [
     stack: ['React', 'Node.js', 'NLP', 'PostgreSQL'],
     accent: 'from-secondary/30 to-accent/30',
     tag: 'AI / NLP',
-    year: '2024',
+    year: '2025',
   },
-  {
-    title: 'Secure REST API',
-    subtitle: 'Auth Service',
-    description: 'JWT authentication and user management following REST best practices, with rate limiting and validation.',
-    stack: ['Node.js', 'Laravel', 'JWT', 'PostgreSQL'],
-    accent: 'from-primary/30 to-accent/30',
-    tag: 'Backend',
-    year: '2024',
-  },
+
   {
     title: 'Interactive Developer Portfolio',
     subtitle: 'This Site',

@@ -8,9 +8,9 @@ const fadeInUp = {
 }
 
 const links = [
-  { label: 'Email', value: 'harentsoa@example.com', href: 'mailto:harentsoa@example.com' },
-  { label: 'GitHub', value: '@harentsoa', href: 'https://github.com' },
-  { label: 'LinkedIn', value: 'Harentsoa Sarobidy', href: 'https://linkedin.com' },
+  { label: 'Email', value: 'hariveloharentsoasarobidy@gmail.com', href: 'mailto:hariveloharentsoasarobidy@gmail.com' },
+  { label: 'GitHub', value: '@Cardixx', href: 'https://github.com/Cardixx' },
+  { label: 'LinkedIn', value: 'Harentsoa Sarobidy', href: 'https://linkedin.com/in/harentsoa-harivelo11' },
 ]
 
 export function Contact() {
