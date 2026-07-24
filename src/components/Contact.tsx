@@ -84,7 +84,7 @@ export function Contact() {
             © {new Date().getFullYear()} Harentsoa Sarobidy Harivelo. Crafted with care.
           </p>
           <p className="font-mono text-xs text-muted-foreground">
-            Antananarivo · Madagascar 🇲🇬
+            Fianarantsoa · Madagascar 🇲🇬
           </p>
         </motion.footer>
       </div>

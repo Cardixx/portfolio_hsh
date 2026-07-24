@@ -58,7 +58,7 @@ export function Hero() {
             <div>
               <p className="font-mono text-xs text-muted-foreground tracking-widest uppercase mb-2">Based in</p>
               <p className="text-lg md:text-xl text-foreground/90">
-                Antananarivo, Madagascar 🇲🇬
+                Fianarantsoa, Madagascar 🇲🇬
               </p>
             </div>
           </motion.div>
