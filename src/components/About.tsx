@@ -11,8 +11,10 @@ const fadeInUp = {
 }
 
 export function About() {
-  const { t } = useSettings()
-  const [profile, setProfile] = useState<ProfileItem>({
+  const { t, language } = useSettings()
+
+  
+  const defaultProfileEn: ProfileItem = {
     fullName: 'Harentsoa Sarobidy Harivelo',
     title: 'Full-Stack Developer & Software Engineering Student',
     subtitle: '',
@@ -24,15 +26,45 @@ export function About() {
     email: 'hariveloharentsoasarobidy@gmail.com',
     githubUrl: 'https://github.com/Cardixx',
     linkedinUrl: 'https://linkedin.com/in/harentsoa-harivelo11'
-  })
+  }
+
+  const defaultProfileFr: ProfileItem = {
+    fullName: 'Harentsoa Sarobidy Harivelo',
+    title: 'Développeur Full-Stack & Étudiant en Informatique',
+    subtitle: '',
+    bio: "Je suis un étudiant en informatique passionné par le développement web et les solutions numériques. Mon objectif est de créer des applications web sécurisées et évolutives qui résolvent des problèmes réels.\n\nCapable de développer des systèmes full-stack avec une approche centrée sur l'utilisateur — je navigue confortablement entre la création d'interfaces React propres et l'architecture d'API robustes avec Laravel, Node.js et Spring Boot.\n\nJ'accorde une grande importance à la qualité du code, aux performances et à l'écriture de logiciels que je serais fier de maintenir six mois plus tard.",
+    currentStatus: 'Ouvert aux opportunités (Dev Junior)',
+    languages: 'Français · Anglais · Malgache',
+    focus: 'Web Full-stack · APIs · Sécurité · Spring Boot',
+    location: 'Fianarantsoa · Madagascar 🇲🇬',
+    email: 'hariveloharentsoasarobidy@gmail.com',
+    githubUrl: 'https://github.com/Cardixx',
+    linkedinUrl: 'https://linkedin.com/in/harentsoa-harivelo11'
+  }
+
+  const [profile, setProfile] = useState<ProfileItem>(language === 'fr' ? defaultProfileFr : defaultProfileEn)
 
   useEffect(() => {
+    setProfile(language === 'fr' ? defaultProfileFr : defaultProfileEn)
     api.getProfile()
       .then((data) => {
-        if (data) setProfile(data)
+        if (data && data.fullName) {
+          if (language === 'fr' && data.bio === defaultProfileEn.bio) {
+            setProfile({
+              ...data,
+              title: defaultProfileFr.title,
+              bio: defaultProfileFr.bio,
+              currentStatus: defaultProfileFr.currentStatus,
+              languages: defaultProfileFr.languages,
+              focus: defaultProfileFr.focus,
+            })
+          } else {
+            setProfile(data)
+          }
+        }
       })
       .catch(() => {})
-  }, [])
+  }, [language])
 
   const paragraphs = profile.bio ? profile.bio.split('\n\n') : []
 

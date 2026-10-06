@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { api, SkillItem } from '@/lib/api'
 import { useSettings } from '@/contexts/SettingsContext'
 
-const defaultGroups = [
+const defaultGroupsEn = [
   {
     label: 'Frontend',
     items: ['React.js', 'JavaScript ES6+', 'HTML5', 'CSS3', 'Responsive Design', 'TailwindCSS'],
@@ -26,6 +26,29 @@ const defaultGroups = [
   },
 ]
 
+const defaultGroupsFr = [
+  {
+    label: 'Frontend',
+    items: ['React.js', 'JavaScript ES6+', 'HTML5', 'CSS3', 'Design Réactif', 'TailwindCSS'],
+  },
+  {
+    label: 'Backend',
+    items: ['Spring Boot', 'Java 21', 'Laravel', 'Node.js', 'APIs REST', 'Authentification JWT'],
+  },
+  {
+    label: 'Bases de données',
+    items: ['PostgreSQL', 'MySQL', 'Hibernate / JPA', 'Modélisation de Données'],
+  },
+  {
+    label: 'Outils & DevOps',
+    items: ['Git', 'GitHub', 'Docker', 'Maven', 'Postman', 'CLI Linux'],
+  },
+  {
+    label: 'Autre',
+    items: ['Sécurité Web', 'Architecture MVC', 'Optimisation des Performances', 'Code Propre'],
+  },
+]
+
 const fadeInUp = {
   initial: { opacity: 0, y: 40 },
   whileInView: { opacity: 1, y: 0 },
@@ -34,20 +57,46 @@ const fadeInUp = {
 }
 
 export function Skills() {
-  const [skillGroups, setSkillGroups] = useState(defaultGroups)
-  const { t } = useSettings()
+  const { t, language } = useSettings()
+  const [skillGroups, setSkillGroups] = useState(language === 'fr' ? defaultGroupsFr : defaultGroupsEn)
 
   useEffect(() => {
+    setSkillGroups(language === 'fr' ? defaultGroupsFr : defaultGroupsEn)
     api.getSkills()
       .then((skills: SkillItem[]) => {
         if (skills && skills.length > 0) {
           const map = new Map<string, string[]>()
           skills.forEach((s) => {
-            const cat = s.category || 'Other'
+            let cat = s.category || 'Other'
+            
+            // Map category to French if language is fr
+            if (language === 'fr') {
+              const matchedEnCat = defaultGroupsEn.find(g => g.label === cat)
+              if (matchedEnCat) {
+                const enIndex = defaultGroupsEn.indexOf(matchedEnCat)
+                if (enIndex !== -1 && defaultGroupsFr[enIndex]) {
+                  cat = defaultGroupsFr[enIndex].label
+                }
+              }
+            }
+
             if (!map.has(cat)) {
               map.set(cat, [])
             }
-            map.get(cat)!.push(s.name)
+            
+            // Translate specific skill names if they match
+            let skillName = s.name
+            if (language === 'fr') {
+              if (skillName === 'Responsive Design') skillName = 'Design Réactif'
+              if (skillName === 'REST APIs') skillName = 'APIs REST'
+              if (skillName === 'JWT Authentication') skillName = 'Authentification JWT'
+              if (skillName === 'Database Modeling') skillName = 'Modélisation de Données'
+              if (skillName === 'Web Security') skillName = 'Sécurité Web'
+              if (skillName === 'Performance Optimization') skillName = 'Optimisation des Performances'
+              if (skillName === 'Clean Code') skillName = 'Code Propre'
+            }
+
+            map.get(cat)!.push(skillName)
           })
           const groups = Array.from(map.entries()).map(([label, items]) => ({
             label,
@@ -57,7 +106,7 @@ export function Skills() {
         }
       })
       .catch(() => {})
-  }, [])
+  }, [language])
 
   return (
     <section id="skills" className="section-padding relative bg-card/30">

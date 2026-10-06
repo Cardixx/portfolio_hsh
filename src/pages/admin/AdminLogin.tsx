@@ -110,11 +110,11 @@ export default function AdminLogin() {
             </button>
           </form>
 
-          <div className="pt-4 border-t border-border/50 text-center">
+          {/* <div className="pt-4 border-t border-border/50 text-center">
             <p className="text-[11px] font-mono text-muted-foreground">
               Identifiants par défaut : <span className="text-foreground">admin</span> / <span className="text-foreground">admin123</span>
             </p>
-          </div>
+          </div> */}
         </motion.div>
       </div>
     </div>

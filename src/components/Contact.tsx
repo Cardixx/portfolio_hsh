@@ -46,8 +46,7 @@ export function Contact() {
           {...fadeInUp}
           className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-16 md:mb-20 leading-relaxed"
         >
-          Open to junior developer roles, freelance projects, and interesting collaborations.
-          Reach out — I usually reply within 24 hours.
+          {t('contact.desc')}
         </motion.p>
 
         <div className="space-y-0">
@@ -84,7 +83,7 @@ export function Contact() {
           className="mt-20 md:mt-32 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-start md:items-center gap-4"
         >
           <p className="font-mono text-xs text-muted-foreground">
-            © {new Date().getFullYear()} Harentsoa Sarobidy Harivelo. Crafted with care.
+            {t('contact.footer_crafted')}
           </p>
           <div className="flex items-center gap-4">
             <p className="font-mono text-xs text-muted-foreground">

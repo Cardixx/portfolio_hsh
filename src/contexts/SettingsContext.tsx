@@ -51,6 +51,8 @@ const translations: Record<Language, Record<string, string>> = {
     'contact.heading_2': 'quelque chose ensemble.',
     'contact.get_in_touch': 'Me contacter',
     'contact.based_in': 'Basé à',
+    'contact.desc': 'Ouvert aux rôles de développeur junior, aux projets freelance et aux collaborations intéressantes. N\'hésitez pas à me contacter — je réponds généralement sous 24 heures.',
+    'contact.footer_crafted': '© 2026 Harentsoa Sarobidy Harivelo. Fait avec soin.',
   },
   en: {
     'nav.about': 'About',
@@ -91,6 +93,8 @@ const translations: Record<Language, Record<string, string>> = {
     'contact.heading_2': 'something together.',
     'contact.get_in_touch': 'Get in Touch',
     'contact.based_in': 'Based in',
+    'contact.desc': 'Open to junior developer roles, freelance projects, and interesting collaborations. Reach out — I usually reply within 24 hours.',
+    'contact.footer_crafted': '© 2026 Harentsoa Sarobidy Harivelo. Crafted with care.',
   }
 };
 

@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { api, ExperienceItem } from '@/lib/api'
 import { useSettings } from '@/contexts/SettingsContext'
 
-const defaultExperiences: ExperienceItem[] = [
+const defaultExperiencesEn: ExperienceItem[] = [
   {
     id: 1,
     title: 'Full-Stack Developer (Internship)',
@@ -33,6 +33,36 @@ const defaultExperiences: ExperienceItem[] = [
   },
 ]
 
+const defaultExperiencesFr: ExperienceItem[] = [
+  {
+    id: 1,
+    title: 'Développeur Full-Stack (Stage)',
+    company: 'Projet de Sécurité Portuaire — SMMC',
+    period: '2025',
+    description: 'Conception et développement d\'une plateforme de gestion des incidents portuaires avec contrôle d\'accès basé sur les rôles et surveillance des caméras en temps réel. J\'ai dirigé le développement du frontend React et l\'intégration de l\'API Spring Boot / Laravel.',
+    skills: ['React', 'Spring Boot', 'PostgreSQL', 'JWT', 'Travail d\'équipe'],
+    sortOrder: 1,
+  },
+  {
+    id: 2,
+    title: 'Développeur Web Freelance',
+    company: 'SaaS & Applications sur mesure',
+    period: '2024 — Présent',
+    description: 'Création de tableaux de bord SaaS de gestion des stocks et d\'applications web sur mesure pour les petites entreprises. Gestion complète du projet : UML, base de données, API, UI, et déploiement.',
+    skills: ['React', 'Spring Boot', 'PostgreSQL', 'UML', 'Chart.js'],
+    sortOrder: 2,
+  },
+  {
+    id: 3,
+    title: 'Étudiant en Informatique',
+    company: 'Université de Madagascar',
+    period: '2024 — Présent',
+    description: 'Étude des fondements de l\'ingénierie logicielle : algorithmes, bases de données, architecture web et sécurité. Actif dans les clubs de programmation et hackathons.',
+    skills: ['Algorithmes', 'Structures de Données', 'Conception Logicielle', 'Sécurité'],
+    sortOrder: 3,
+  },
+]
+
 const fadeInUp = {
   initial: { opacity: 0, y: 40 },
   whileInView: { opacity: 1, y: 0 },
@@ -41,16 +71,39 @@ const fadeInUp = {
 }
 
 export function Experience() {
-  const [experiences, setExperiences] = useState<ExperienceItem[]>(defaultExperiences)
-  const { t } = useSettings()
+  const { t, language } = useSettings()
+  const [experiences, setExperiences] = useState<ExperienceItem[]>(language === 'fr' ? defaultExperiencesFr : defaultExperiencesEn)
 
   useEffect(() => {
+    setExperiences(language === 'fr' ? defaultExperiencesFr : defaultExperiencesEn)
     api.getExperiences()
       .then((data) => {
-        if (data && data.length > 0) setExperiences(data)
+        if (data && data.length > 0) {
+          if (language === 'fr') {
+            const mappedData = data.map(dbExp => {
+              const matchedEn = defaultExperiencesEn.find(enExp => enExp.title === dbExp.title && enExp.company === dbExp.company)
+              if (matchedEn) {
+                const matchedFr = defaultExperiencesFr.find(frExp => frExp.id === matchedEn.id)
+                if (matchedFr) {
+                  return {
+                    ...dbExp,
+                    title: matchedFr.title,
+                    company: matchedFr.company,
+                    description: matchedFr.description,
+                    skills: matchedFr.skills
+                  }
+                }
+              }
+              return dbExp
+            })
+            setExperiences(mappedData)
+          } else {
+            setExperiences(data)
+          }
+        }
       })
       .catch(() => {})
-  }, [])
+  }, [language])
 
   return (
     <section id="experience" className="section-padding bg-card/30">

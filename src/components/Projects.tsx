@@ -5,7 +5,7 @@ import { ProjectModal } from './ProjectModal'
 import { Play, Sparkles, Eye, ArrowUpRight } from 'lucide-react'
 import { useSettings } from '@/contexts/SettingsContext'
 
-const fallbackProjects: ProjectItem[] = [
+const fallbackProjectsEn: ProjectItem[] = [
   {
     id: 1,
     title: 'Secure REST API',
@@ -83,23 +83,121 @@ const fallbackProjects: ProjectItem[] = [
   },
 ]
 
+const fallbackProjectsFr: ProjectItem[] = [
+  {
+    id: 1,
+    title: 'API REST Sécurisée',
+    subtitle: 'Service d\'Authentification',
+    description: 'Authentification JWT et gestion des utilisateurs suivant les meilleures pratiques REST, avec limitation de débit.',
+    longDescription: 'Une API RESTful de qualité production construite avec l\'architecture Spring Boot / Node.js. Les fonctionnalités incluent l\'authentification JWT sans état avec rotation de token, le hachage de mot de passe BCrypt, l\'autorisation basée sur les rôles (RBAC), et plus.',
+    stack: ['Node.js', 'Spring Boot', 'JWT', 'PostgreSQL'],
+    accent: 'from-primary/30 to-accent/30',
+    tag: 'Backend',
+    year: '2024',
+    presentationImageUrl: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80',
+    presentationVideoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+    githubUrl: 'https://github.com/Cardixx',
+    viewCount: 124,
+  },
+  {
+    id: 2,
+    title: 'Plateforme de Sécurité Portuaire',
+    subtitle: 'SMMC',
+    description: 'Tableau de bord intelligent pour la gestion des incidents portuaires et des caméras de surveillance.',
+    longDescription: 'Tableau de bord d\'entreprise conçu pour les opérations de sécurité portuaire. Permet l\'enregistrement des incidents en temps réel, le suivi des patrouilles, et les flux vidéo des caméras.',
+    stack: ['React', 'Spring Boot', 'PostgreSQL', 'JWT'],
+    accent: 'from-primary/30 to-secondary/30',
+    tag: 'Mis en Avant',
+    year: '2025',
+    presentationImageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80',
+    presentationVideoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+    githubUrl: 'https://github.com/Cardixx',
+    viewCount: 248,
+  },
+  {
+    id: 3,
+    title: 'SaaS de Gestion Commerciale',
+    subtitle: 'Stock & Ventes',
+    description: 'Système de gestion des produits et des stocks avec tableau de bord analytique interactif.',
+    longDescription: 'Application Cloud de gestion des stocks et de point de vente. Prend en charge les mouvements de stocks multi-entrepôts, les notifications automatisées et la génération de factures.',
+    stack: ['React', 'Laravel', 'Chart.js', 'PostgreSQL'],
+    accent: 'from-accent/30 to-primary/30',
+    tag: 'SaaS',
+    year: '2024',
+    presentationImageUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80',
+    presentationVideoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+    githubUrl: 'https://github.com/Cardixx',
+    viewCount: 180,
+  },
+  {
+    id: 4,
+    title: 'Plateforme de Feedback Intelligent',
+    subtitle: 'Alimenté par NLP',
+    description: 'Analyse automatique des sentiments des retours étudiants avec un tableau de bord pour les professeurs.',
+    longDescription: 'Plateforme EdTech appliquant le Traitement du Langage Naturel (NLP) aux évaluations de cours. Détecte automatiquement la polarité des sentiments et identifie les thèmes récurrents.',
+    stack: ['React', 'Node.js', 'NLP', 'PostgreSQL'],
+    accent: 'from-secondary/30 to-accent/30',
+    tag: 'IA / NLP',
+    year: '2025',
+    presentationImageUrl: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80',
+    presentationVideoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+    githubUrl: 'https://github.com/Cardixx',
+    viewCount: 95,
+  },
+  {
+    id: 5,
+    title: 'Portfolio Développeur',
+    subtitle: 'Ce site',
+    description: 'UI immersive inspirée des portfolios créatifs — animations modernes et expérience utilisateur (UX).',
+    longDescription: 'Application web portfolio mettant en valeur des compétences full-stack. Fonctionnalités de présentation dynamique avec un backend Spring Boot + PostgreSQL et un panel administrateur complet.',
+    stack: ['React', 'TypeScript', 'Spring Boot', 'PostgreSQL', 'Framer Motion'],
+    accent: 'from-secondary/30 to-primary/30',
+    tag: 'Design',
+    year: '2025',
+    presentationImageUrl: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1200&q=80',
+    presentationVideoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
+    githubUrl: 'https://github.com/Cardixx/portfolio_hsh',
+    viewCount: 310,
+  },
+]
+
 export function Projects() {
-  const [projects, setProjects] = useState<ProjectItem[]>(fallbackProjects)
+  const { t, language } = useSettings()
+  const [projects, setProjects] = useState<ProjectItem[]>(language === 'fr' ? fallbackProjectsFr : fallbackProjectsEn)
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const { t } = useSettings()
 
   useEffect(() => {
+    setProjects(language === 'fr' ? fallbackProjectsFr : fallbackProjectsEn)
     api.getProjects()
       .then((data) => {
         if (data && data.length > 0) {
-          setProjects(data)
+          if (language === 'fr') {
+            const mappedData = data.map(dbProj => {
+              const matchedEn = fallbackProjectsEn.find(enProj => enProj.title === dbProj.title && enProj.description === dbProj.description)
+              if (matchedEn) {
+                const matchedFr = fallbackProjectsFr.find(frProj => frProj.id === matchedEn.id)
+                if (matchedFr) {
+                  return {
+                    ...dbProj,
+                    title: matchedFr.title,
+                    subtitle: matchedFr.subtitle,
+                    description: matchedFr.description,
+                    longDescription: matchedFr.longDescription,
+                    tag: matchedFr.tag
+                  }
+                }
+              }
+              return dbProj
+            })
+            setProjects(mappedData)
+          } else {
+            setProjects(data)
+          }
         }
       })
-      .catch(() => {
-        // Keeps fallbackProjects gracefully if backend is offline or starting
-      })
-  }, [])
+      .catch(() => {})
+  }, [language])
 
   const handleOpenProject = (project: ProjectItem) => {
     setSelectedProject(project)
