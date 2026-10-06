@@ -83,9 +83,17 @@ export function Contact() {
           <p className="font-mono text-xs text-muted-foreground">
             © {new Date().getFullYear()} Harentsoa Sarobidy Harivelo. Crafted with care.
           </p>
-          <p className="font-mono text-xs text-muted-foreground">
-            Fianarantsoa · Madagascar 🇲🇬
-          </p>
+          <div className="flex items-center gap-4">
+            <p className="font-mono text-xs text-muted-foreground">
+              Fianarantsoa · Madagascar 🇲🇬
+            </p>
+            <a
+              href="/admin"
+              className="text-xs font-mono text-muted-foreground/60 hover:text-primary transition-colors flex items-center gap-1 border border-border/50 px-2.5 py-1 rounded-md hover:border-primary/40"
+            >
+              🔒 Admin Portal
+            </a>
+          </div>
         </motion.footer>
       </div>
     </section>

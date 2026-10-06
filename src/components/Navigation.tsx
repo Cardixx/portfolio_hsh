@@ -60,6 +60,12 @@ export function Navigation() {
                 {item.label}
               </button>
             ))}
+            <a
+              href="/admin"
+              className="text-xs text-primary mix-blend-difference py-1 font-mono hover:underline flex items-center gap-1"
+            >
+              🔒 Admin
+            </a>
           </div>
         </div>
 

@@ -1,21 +1,23 @@
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { api, SkillItem } from '@/lib/api'
 
-const skillGroups = [
+const defaultGroups = [
   {
     label: 'Frontend',
     items: ['React.js', 'JavaScript ES6+', 'HTML5', 'CSS3', 'Responsive Design', 'TailwindCSS'],
   },
   {
     label: 'Backend',
-    items: ['Laravel', 'Node.js', 'REST APIs', 'JWT Authentication', 'Express'],
+    items: ['Spring Boot', 'Java 21', 'Laravel', 'Node.js', 'REST APIs', 'JWT Authentication'],
   },
   {
     label: 'Databases',
-    items: ['MySQL', 'PostgreSQL', 'UML Design', 'Database Modeling'],
+    items: ['PostgreSQL', 'MySQL', 'Hibernate / JPA', 'Database Modeling'],
   },
   {
     label: 'Tools & DevOps',
-    items: ['Git', 'GitHub', 'Docker (basic)', 'CI/CD (basic)', 'Postman'],
+    items: ['Git', 'GitHub', 'Docker', 'Maven', 'Postman', 'Linux CLI'],
   },
   {
     label: 'Other',
@@ -31,6 +33,30 @@ const fadeInUp = {
 }
 
 export function Skills() {
+  const [skillGroups, setSkillGroups] = useState(defaultGroups)
+
+  useEffect(() => {
+    api.getSkills()
+      .then((skills: SkillItem[]) => {
+        if (skills && skills.length > 0) {
+          const map = new Map<string, string[]>()
+          skills.forEach((s) => {
+            const cat = s.category || 'Other'
+            if (!map.has(cat)) {
+              map.set(cat, [])
+            }
+            map.get(cat)!.push(s.name)
+          })
+          const groups = Array.from(map.entries()).map(([label, items]) => ({
+            label,
+            items,
+          }))
+          setSkillGroups(groups)
+        }
+      })
+      .catch(() => {})
+  }, [])
+
   return (
     <section id="skills" className="section-padding relative bg-card/30">
       <div className="absolute top-20 right-0 w-96 h-96 rounded-full bg-secondary/10 blur-3xl pointer-events-none" />

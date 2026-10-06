@@ -1,26 +1,34 @@
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { api, ExperienceItem } from '@/lib/api'
 
-const experiences = [
+const defaultExperiences: ExperienceItem[] = [
   {
+    id: 1,
     title: 'Full-Stack Developer (Internship)',
     company: 'Port Security Project — SMMC',
     period: '2025',
-    description: 'Designed and built a port incident management platform with role-based access control and real-time camera monitoring. Led the React frontend and Laravel API integration.',
-    skills: ['React', 'Laravel', 'MySQL', 'JWT', 'Team Collaboration'],
+    description: 'Designed and built a port incident management platform with role-based access control and real-time camera monitoring. Led the React frontend and Spring Boot / Laravel API integration.',
+    skills: ['React', 'Spring Boot', 'PostgreSQL', 'JWT', 'Team Collaboration'],
+    sortOrder: 1,
   },
   {
+    id: 2,
     title: 'Freelance Web Developer',
     company: 'SaaS & Custom Apps',
     period: '2024 — Present',
     description: 'Building stock-management SaaS dashboards and bespoke web applications for small businesses. Full project ownership: UML, database, API, UI, and deployment.',
-    skills: ['React', 'Laravel', 'PostgreSQL', 'UML', 'Chart.js'],
+    skills: ['React', 'Spring Boot', 'PostgreSQL', 'UML', 'Chart.js'],
+    sortOrder: 2,
   },
   {
+    id: 3,
     title: 'Computer Science Student',
     company: 'University of Madagascar',
     period: '2024 — Present',
     description: 'Studying software engineering fundamentals: algorithms, databases, web architecture, and security. Active in coding clubs and hackathons.',
     skills: ['Algorithms', 'Data Structures', 'Software Design', 'Security'],
+    sortOrder: 3,
   },
 ]
 
@@ -32,6 +40,16 @@ const fadeInUp = {
 }
 
 export function Experience() {
+  const [experiences, setExperiences] = useState<ExperienceItem[]>(defaultExperiences)
+
+  useEffect(() => {
+    api.getExperiences()
+      .then((data) => {
+        if (data && data.length > 0) setExperiences(data)
+      })
+      .catch(() => {})
+  }, [])
+
   return (
     <section id="experience" className="section-padding bg-card/30">
       <div className="max-w-6xl mx-auto">
@@ -56,7 +74,7 @@ export function Experience() {
           <div className="space-y-12 md:space-y-20">
             {experiences.map((exp, index) => (
               <motion.article
-                key={exp.company}
+                key={exp.id || exp.company}
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-50px' }}
@@ -77,7 +95,7 @@ export function Experience() {
                     {exp.description}
                   </p>
                   <div className={`flex flex-wrap gap-2 ${index % 2 === 0 ? '' : 'md:justify-end'}`}>
-                    {exp.skills.map((skill) => (
+                    {exp.skills && exp.skills.map((skill) => (
                       <span
                         key={skill}
                         className="px-2.5 py-1 text-xs font-mono text-muted-foreground border border-border rounded-md hover:border-primary/60 hover:text-primary transition-colors"
