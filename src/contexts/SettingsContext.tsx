@@ -3,12 +3,37 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 type Theme = 'dark' | 'light';
 type Language = 'fr' | 'en';
 
+/**
+ * Parse a bilingual string stored as "[EN] English text [FR] French text"
+ * and return the appropriate text for the given language.
+ * If no markers are found, the raw text is returned as-is.
+ */
+export function parseBilingual(text: string | undefined | null, lang: Language): string {
+  if (!text) return '';
+  const enMatch = text.match(/\[EN\]([\s\S]*?)(?=\[FR\]|$)/);
+  const frMatch = text.match(/\[FR\]([\s\S]*?)(?=\[EN\]|$)/);
+  if (!enMatch && !frMatch) return text; // no markers — return raw
+  if (lang === 'fr') return frMatch ? frMatch[1].trim() : (enMatch ? enMatch[1].trim() : text);
+  return enMatch ? enMatch[1].trim() : (frMatch ? frMatch[1].trim() : text);
+}
+
+/**
+ * Build a bilingual string from separate EN and FR values.
+ */
+export function formatBilingual(en: string, fr: string): string {
+  if (!en && !fr) return '';
+  if (!fr) return en;
+  if (!en) return fr;
+  return `[EN] ${en} [FR] ${fr}`;
+}
+
 interface SettingsContextType {
   theme: Theme;
   setTheme: (theme: Theme) => void;
   language: Language;
   setLanguage: (lang: Language) => void;
   t: (key: string) => string;
+  parseBilingual: (text: string | undefined | null) => string;
 }
 
 const translations: Record<Language, Record<string, string>> = {
@@ -135,8 +160,10 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
     return translations[language][key] || key;
   };
 
+  const parseBilingualBound = (text: string | undefined | null) => parseBilingual(text, language);
+
   return (
-    <SettingsContext.Provider value={{ theme, setTheme, language, setLanguage, t }}>
+    <SettingsContext.Provider value={{ theme, setTheme, language, setLanguage, t, parseBilingual: parseBilingualBound }}>
       {children}
     </SettingsContext.Provider>
   );

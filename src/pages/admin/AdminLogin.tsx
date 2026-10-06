@@ -2,9 +2,11 @@ import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { api } from '@/lib/api'
-import { Lock, User, ArrowLeft, ShieldAlert } from 'lucide-react'
+import { Lock, User, ArrowLeft, ShieldAlert, Sun, Moon } from 'lucide-react'
+import { useSettings } from '@/contexts/SettingsContext'
 
 export default function AdminLogin() {
+  const { theme, setTheme, language, setLanguage } = useSettings()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -33,13 +35,32 @@ export default function AdminLogin() {
       <div className="absolute bottom-10 right-10 w-80 h-80 rounded-full bg-secondary/10 blur-[100px] pointer-events-none" />
 
       <div className="w-full max-w-md relative z-10">
-        <Link
-          to="/"
-          className="inline-flex items-center gap-2 text-xs font-mono text-muted-foreground hover:text-primary transition-colors mb-6"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Retour au Portfolio
-        </Link>
+        <div className="flex items-center justify-between mb-6">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 text-xs font-mono text-muted-foreground hover:text-primary transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Retour au Portfolio
+          </Link>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              className="w-8 h-8 flex items-center justify-center rounded-full border border-border/50 bg-card/80 backdrop-blur-xl text-muted-foreground hover:text-primary transition-colors"
+              title="Basculer le thème"
+            >
+              {theme === 'dark' ? <Sun className="w-3.5 h-3.5" /> : <Moon className="w-3.5 h-3.5" />}
+            </button>
+            <button
+              onClick={() => setLanguage(language === 'en' ? 'fr' : 'en')}
+              className="w-8 h-8 flex items-center justify-center rounded-full border border-border/50 bg-card/80 backdrop-blur-xl text-muted-foreground hover:text-primary font-mono text-[10px] uppercase transition-colors"
+              title="Changer de langue"
+            >
+              {language}
+            </button>
+          </div>
+        </div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}

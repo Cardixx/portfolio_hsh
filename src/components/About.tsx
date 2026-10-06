@@ -44,11 +44,15 @@ export function About() {
 
   const [profile, setProfile] = useState<ProfileItem>(language === 'fr' ? defaultProfileFr : defaultProfileEn)
 
+  const { parseBilingual } = useSettings()
+
   useEffect(() => {
     setProfile(language === 'fr' ? defaultProfileFr : defaultProfileEn)
     api.getProfile()
       .then((data) => {
         if (data && data.fullName) {
+          // If data uses [EN]/[FR] markers, parseBilingual will handle it automatically.
+          // If it matches defaults exactly, swap to translated defaults.
           if (language === 'fr' && data.bio === defaultProfileEn.bio) {
             setProfile({
               ...data,
@@ -66,7 +70,14 @@ export function About() {
       .catch(() => {})
   }, [language])
 
-  const paragraphs = profile.bio ? profile.bio.split('\n\n') : []
+  // Use parseBilingual so admin-entered [EN]/[FR] fields display correctly
+  const displayBio = parseBilingual(profile.bio) || profile.bio
+  const displayStatus = parseBilingual(profile.currentStatus) || profile.currentStatus
+  const displayLanguages = parseBilingual(profile.languages) || profile.languages
+  const displayFocus = parseBilingual(profile.focus) || profile.focus
+  const displayTitle = parseBilingual(profile.title) || profile.title
+
+  const paragraphs = displayBio ? displayBio.split('\n\n') : []
 
   return (
     <section id="about" className="section-padding relative">
@@ -85,10 +96,10 @@ export function About() {
           className="font-display text-5xl md:text-7xl lg:text-8xl tracking-tighter mb-12 md:mb-16 leading-[0.95]"
         >
           {profile.subtitle ? (
-            profile.subtitle
+            parseBilingual(profile.subtitle)
           ) : (
             <>
-              {t('about.heading_1')}<br />
+              {parseBilingual(profile.title) !== profile.title ? parseBilingual(profile.title) : t('about.heading_1')}<br />
               <span className="text-gradient">{t('about.heading_2')}</span>
             </>
           )}
@@ -109,22 +120,22 @@ export function About() {
             <div className="border border-border rounded-lg p-6 md:p-8 bg-card/50 backdrop-blur space-y-6">
               <div>
                 <p className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-2">{t('about.currently')}</p>
-                <p className="text-foreground">{profile.currentStatus}</p>
+                <p className="text-foreground">{displayStatus}</p>
               </div>
               <div className="h-px bg-border" />
               <div>
                 <p className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-2">{t('about.languages')}</p>
-                <p className="text-foreground">{profile.languages}</p>
+                <p className="text-foreground">{displayLanguages}</p>
               </div>
               <div className="h-px bg-border" />
               <div>
                 <p className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-2">{t('about.focus')}</p>
-                <p className="text-foreground">{profile.focus}</p>
+                <p className="text-foreground">{displayFocus}</p>
               </div>
               <div className="h-px bg-border" />
               <div>
                 <p className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-2">{t('about.location')}</p>
-                <p className="text-foreground">{profile.location}</p>
+                <p className="text-foreground">{parseBilingual(profile.location) || profile.location}</p>
               </div>
             </div>
           </motion.div>

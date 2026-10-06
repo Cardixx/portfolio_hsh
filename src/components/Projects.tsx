@@ -162,7 +162,7 @@ const fallbackProjectsFr: ProjectItem[] = [
 ]
 
 export function Projects() {
-  const { t, language } = useSettings()
+  const { t, language, parseBilingual } = useSettings()
   const [projects, setProjects] = useState<ProjectItem[]>(language === 'fr' ? fallbackProjectsFr : fallbackProjectsEn)
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -306,10 +306,10 @@ export function Projects() {
               {/* Info */}
               <div className="p-6 md:p-8 relative z-10">
                 <p className="font-mono text-xs text-primary uppercase tracking-widest mb-2">
-                  {project.subtitle}
+                  {parseBilingual(project.subtitle) || project.subtitle}
                 </p>
                 <h3 className="text-xl md:text-2xl lg:text-3xl text-foreground font-medium mb-3 group-hover:text-primary transition-colors flex items-center justify-between">
-                  <span>{project.title}</span>
+                  <span>{parseBilingual(project.title) || project.title}</span>
                   {project.presentationVideoUrl && (
                     <span className="text-xs font-mono text-muted-foreground bg-primary/10 border border-primary/20 px-2 py-0.5 rounded-full flex items-center gap-1">
                       <Play className="w-2.5 h-2.5 fill-current text-primary" /> Vidéo incluse
@@ -317,7 +317,7 @@ export function Projects() {
                   )}
                 </h3>
                 <p className="text-sm md:text-base text-muted-foreground leading-relaxed mb-5 line-clamp-3">
-                  {project.description}
+                  {parseBilingual(project.description) || project.description}
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {project.stack && project.stack.map((tech) => (

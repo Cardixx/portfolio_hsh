@@ -11,6 +11,8 @@ import {
   ProfileItem,
   StatsSummary,
 } from '@/lib/api'
+import { useSettings } from '@/contexts/SettingsContext'
+import { parseBilingual, formatBilingual } from '@/contexts/SettingsContext'
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid,
   PieChart, Pie, Cell,
@@ -18,16 +20,17 @@ import {
 import {
   LayoutDashboard, FolderGit2, Cpu, Briefcase, User, LogOut, Plus,
   Trash2, Edit, ExternalLink, Play, Image as ImageIcon, Eye, Users,
-  TrendingUp, Clock, Globe, Shield, Upload, Check, RefreshCw
+  TrendingUp, Clock, Globe, Shield, Upload, Check, RefreshCw, Sun, Moon
 } from 'lucide-react'
 
 const PIE_COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899']
 
 export default function AdminDashboard() {
   const navigate = useNavigate()
+  const { theme, setTheme, language, setLanguage } = useSettings()
   const [activeTab, setActiveTab] = useState<'stats' | 'projects' | 'skills' | 'experiences' | 'profile' | 'security'>('stats')
 
-  // Data states
+// ... (other states)
   const [stats, setStats] = useState<StatsSummary | null>(null)
   const [projects, setProjects] = useState<ProjectItem[]>([])
   const [skills, setSkills] = useState<SkillItem[]>([])
@@ -342,6 +345,23 @@ export default function AdminDashboard() {
         </div>
 
         <div className="flex items-center gap-3">
+          <button
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            className="w-8 h-8 flex items-center justify-center rounded-full border border-border/50 text-muted-foreground hover:text-primary transition-colors"
+            title="Basculer le thème"
+          >
+            {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+          </button>
+          
+          <button
+            onClick={() => setLanguage(language === 'en' ? 'fr' : 'en')}
+            className="w-8 h-8 flex items-center justify-center rounded-full border border-border/50 text-muted-foreground hover:text-primary font-mono text-xs uppercase transition-colors"
+            title="Changer de langue"
+          >
+            {language}
+          </button>
+          <span className="h-4 w-px bg-border/50 mx-1" />
+
           <button
             onClick={loadAllData}
             title="Rafraîchir les données"
@@ -939,12 +959,31 @@ export default function AdminDashboard() {
 
                   <div className="space-y-1.5">
                     <label className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
-                      Titre Professionnel
+                      Titre Professionnel 🇬🇧
                     </label>
                     <input
                       type="text"
-                      value={profile.title}
-                      onChange={(e) => setProfile({ ...profile, title: e.target.value })}
+                      value={parseBilingual(profile.title, 'en')}
+                      onChange={(e) => {
+                        const fr = parseBilingual(profile.title, 'fr')
+                        setProfile({ ...profile, title: formatBilingual(e.target.value, fr) })
+                      }}
+                      placeholder="Full-Stack Developer..."
+                      className="w-full px-4 py-2 rounded-xl border border-border bg-background/50 font-mono text-sm focus:border-primary focus:outline-none"
+                    />
+                  </div>
+                  <div className="space-y-1.5 md:col-span-2">
+                    <label className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
+                      Titre Professionnel 🇫🇷
+                    </label>
+                    <input
+                      type="text"
+                      value={parseBilingual(profile.title, 'fr')}
+                      onChange={(e) => {
+                        const en = parseBilingual(profile.title, 'en')
+                        setProfile({ ...profile, title: formatBilingual(en, e.target.value) })
+                      }}
+                      placeholder="Développeur Full-Stack..."
                       className="w-full px-4 py-2 rounded-xl border border-border bg-background/50 font-mono text-sm focus:border-primary focus:outline-none"
                     />
                   </div>
@@ -964,12 +1003,32 @@ export default function AdminDashboard() {
 
                 <div className="space-y-1.5">
                   <label className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
-                    Biographie complète (séparez les paragraphes par un double saut de ligne)
+                    Biographie 🇬🇧 (double saut de ligne = paragraphe)
                   </label>
                   <textarea
-                    rows={6}
-                    value={profile.bio}
-                    onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
+                    rows={5}
+                    value={parseBilingual(profile.bio, 'en')}
+                    onChange={(e) => {
+                      const fr = parseBilingual(profile.bio, 'fr')
+                      setProfile({ ...profile, bio: formatBilingual(e.target.value, fr) })
+                    }}
+                    placeholder="Biography in English..."
+                    className="w-full px-4 py-2.5 rounded-xl border border-border bg-background/50 font-mono text-sm focus:border-primary focus:outline-none leading-relaxed"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
+                    Biographie 🇫🇷 (double saut de ligne = paragraphe)
+                  </label>
+                  <textarea
+                    rows={5}
+                    value={parseBilingual(profile.bio, 'fr')}
+                    onChange={(e) => {
+                      const en = parseBilingual(profile.bio, 'en')
+                      setProfile({ ...profile, bio: formatBilingual(en, e.target.value) })
+                    }}
+                    placeholder="Biographie en français..."
                     className="w-full px-4 py-2.5 rounded-xl border border-border bg-background/50 font-mono text-sm focus:border-primary focus:outline-none leading-relaxed"
                   />
                 </div>
@@ -977,12 +1036,16 @@ export default function AdminDashboard() {
                 <div className="grid md:grid-cols-3 gap-4">
                   <div className="space-y-1.5">
                     <label className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
-                      Statut actuel (Currently)
+                      Statut actuel 🇬🇧
                     </label>
                     <input
                       type="text"
-                      value={profile.currentStatus}
-                      onChange={(e) => setProfile({ ...profile, currentStatus: e.target.value })}
+                      value={parseBilingual(profile.currentStatus, 'en')}
+                      onChange={(e) => {
+                        const fr = parseBilingual(profile.currentStatus, 'fr')
+                        setProfile({ ...profile, currentStatus: formatBilingual(e.target.value, fr) })
+                      }}
+                      placeholder="Open to junior dev opportunities"
                       className="w-full px-4 py-2 rounded-xl border border-border bg-background/50 font-mono text-sm focus:border-primary focus:outline-none"
                     />
                   </div>
@@ -1001,12 +1064,55 @@ export default function AdminDashboard() {
 
                   <div className="space-y-1.5">
                     <label className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
-                      Focus principal
+                      Focus principal 🇬🇧
                     </label>
                     <input
                       type="text"
-                      value={profile.focus}
-                      onChange={(e) => setProfile({ ...profile, focus: e.target.value })}
+                      value={parseBilingual(profile.focus, 'en')}
+                      onChange={(e) => {
+                        const fr = parseBilingual(profile.focus, 'fr')
+                        setProfile({ ...profile, focus: formatBilingual(e.target.value, fr) })
+                      }}
+                      placeholder="Full-stack web · APIs · Security"
+                      className="w-full px-4 py-2 rounded-xl border border-border bg-background/50 font-mono text-sm focus:border-primary focus:outline-none"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid md:grid-cols-3 gap-4">
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
+                      Statut actuel 🇫🇷
+                    </label>
+                    <input
+                      type="text"
+                      value={parseBilingual(profile.currentStatus, 'fr')}
+                      onChange={(e) => {
+                        const en = parseBilingual(profile.currentStatus, 'en')
+                        setProfile({ ...profile, currentStatus: formatBilingual(en, e.target.value) })
+                      }}
+                      placeholder="Ouvert aux opportunités junior"
+                      className="w-full px-4 py-2 rounded-xl border border-border bg-background/50 font-mono text-sm focus:border-primary focus:outline-none"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-mono uppercase tracking-wider text-muted-foreground">— (vide)</label>
+                    <input type="text" disabled className="w-full px-4 py-2 rounded-xl border border-border bg-muted/20 opacity-30 font-mono text-sm" />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
+                      Focus principal 🇫🇷
+                    </label>
+                    <input
+                      type="text"
+                      value={parseBilingual(profile.focus, 'fr')}
+                      onChange={(e) => {
+                        const en = parseBilingual(profile.focus, 'en')
+                        setProfile({ ...profile, focus: formatBilingual(en, e.target.value) })
+                      }}
+                      placeholder="Web Full-stack · APIs · Sécurité"
                       className="w-full px-4 py-2 rounded-xl border border-border bg-background/50 font-mono text-sm focus:border-primary focus:outline-none"
                     />
                   </div>
@@ -1220,27 +1326,72 @@ export default function AdminDashboard() {
                 </div>
               </div>
 
+              {/* Bilingual banner */}
+              <div className="p-3.5 rounded-xl bg-primary/10 border border-primary/20 font-mono text-xs text-primary flex items-start gap-2">
+                <span className="shrink-0">🌐</span>
+                <span>Entrez le texte en <strong>anglais</strong> ET en <strong>français</strong> pour que le site change de langue automatiquement. Les champs d'une seule langue fonctionnent aussi.</span>
+              </div>
+
               <div className="space-y-1.5">
                 <label className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
-                  Description courte (aperçu carte)
+                  Description courte 🇬🇧 Anglais (aperçu carte)
                 </label>
                 <textarea
                   rows={2}
-                  value={projectForm.description}
-                  onChange={(e) => setProjectForm({ ...projectForm, description: e.target.value })}
+                  value={parseBilingual(projectForm.description as string, 'en')}
+                  onChange={(e) => {
+                    const fr = parseBilingual(projectForm.description as string, 'fr')
+                    setProjectForm({ ...projectForm, description: formatBilingual(e.target.value, fr) })
+                  }}
+                  placeholder="Short description in English..."
                   className="w-full px-3.5 py-2 rounded-xl border border-border bg-background/50 font-mono text-sm focus:border-primary focus:outline-none"
                 />
               </div>
 
               <div className="space-y-1.5">
                 <label className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
-                  Description détaillée pour la présentation
+                  Description courte 🇫🇷 Français (aperçu carte)
                 </label>
                 <textarea
-                  rows={4}
-                  value={projectForm.longDescription}
-                  onChange={(e) => setProjectForm({ ...projectForm, longDescription: e.target.value })}
-                  placeholder="Détails de l'architecture, challenge relevé, impact..."
+                  rows={2}
+                  value={parseBilingual(projectForm.description as string, 'fr')}
+                  onChange={(e) => {
+                    const en = parseBilingual(projectForm.description as string, 'en')
+                    setProjectForm({ ...projectForm, description: formatBilingual(en, e.target.value) })
+                  }}
+                  placeholder="Description courte en français..."
+                  className="w-full px-3.5 py-2 rounded-xl border border-border bg-background/50 font-mono text-sm focus:border-primary focus:outline-none"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
+                  Description détaillée 🇬🇧 Anglais
+                </label>
+                <textarea
+                  rows={3}
+                  value={parseBilingual(projectForm.longDescription as string, 'en')}
+                  onChange={(e) => {
+                    const fr = parseBilingual(projectForm.longDescription as string, 'fr')
+                    setProjectForm({ ...projectForm, longDescription: formatBilingual(e.target.value, fr) })
+                  }}
+                  placeholder="Detailed description in English..."
+                  className="w-full px-3.5 py-2 rounded-xl border border-border bg-background/50 font-mono text-sm focus:border-primary focus:outline-none"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
+                  Description détaillée 🇫🇷 Français
+                </label>
+                <textarea
+                  rows={3}
+                  value={parseBilingual(projectForm.longDescription as string, 'fr')}
+                  onChange={(e) => {
+                    const en = parseBilingual(projectForm.longDescription as string, 'en')
+                    setProjectForm({ ...projectForm, longDescription: formatBilingual(en, e.target.value) })
+                  }}
+                  placeholder="Description détaillée en français..."
                   className="w-full px-3.5 py-2 rounded-xl border border-border bg-background/50 font-mono text-sm focus:border-primary focus:outline-none"
                 />
               </div>
@@ -1432,24 +1583,59 @@ export default function AdminDashboard() {
             </h3>
             <form onSubmit={handleSaveExp} className="space-y-4">
               <div className="space-y-1.5">
-                <label className="text-xs font-mono uppercase text-muted-foreground">Titre du poste *</label>
+                <label className="text-xs font-mono uppercase text-muted-foreground">Titre du poste 🇬🇧 *</label>
                 <input
                   type="text"
                   required
-                  value={expForm.title}
-                  onChange={(e) => setExpForm({ ...expForm, title: e.target.value })}
+                  value={parseBilingual(expForm.title as string, 'en')}
+                  onChange={(e) => {
+                    const fr = parseBilingual(expForm.title as string, 'fr')
+                    setExpForm({ ...expForm, title: formatBilingual(e.target.value, fr) })
+                  }}
+                  placeholder="Job title in English..."
+                  className="w-full px-3.5 py-2 rounded-xl border border-border bg-background/50 font-mono text-sm focus:border-primary focus:outline-none"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-mono uppercase text-muted-foreground">Titre du poste 🇫🇷</label>
+                <input
+                  type="text"
+                  value={parseBilingual(expForm.title as string, 'fr')}
+                  onChange={(e) => {
+                    const en = parseBilingual(expForm.title as string, 'en')
+                    setExpForm({ ...expForm, title: formatBilingual(en, e.target.value) })
+                  }}
+                  placeholder="Titre du poste en français..."
                   className="w-full px-3.5 py-2 rounded-xl border border-border bg-background/50 font-mono text-sm focus:border-primary focus:outline-none"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-mono uppercase text-muted-foreground">Entreprise / Projet *</label>
+                  <label className="text-xs font-mono uppercase text-muted-foreground">Entreprise 🇬🇧 *</label>
                   <input
                     type="text"
                     required
-                    value={expForm.company}
-                    onChange={(e) => setExpForm({ ...expForm, company: e.target.value })}
+                    value={parseBilingual(expForm.company as string, 'en')}
+                    onChange={(e) => {
+                      const fr = parseBilingual(expForm.company as string, 'fr')
+                      setExpForm({ ...expForm, company: formatBilingual(e.target.value, fr) })
+                    }}
+                    placeholder="Company in English..."
+                    className="w-full px-3.5 py-2 rounded-xl border border-border bg-background/50 font-mono text-sm focus:border-primary focus:outline-none"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-mono uppercase text-muted-foreground">Entreprise 🇫🇷</label>
+                  <input
+                    type="text"
+                    value={parseBilingual(expForm.company as string, 'fr')}
+                    onChange={(e) => {
+                      const en = parseBilingual(expForm.company as string, 'en')
+                      setExpForm({ ...expForm, company: formatBilingual(en, e.target.value) })
+                    }}
+                    placeholder="Entreprise en français..."
                     className="w-full px-3.5 py-2 rounded-xl border border-border bg-background/50 font-mono text-sm focus:border-primary focus:outline-none"
                   />
                 </div>
@@ -1466,11 +1652,29 @@ export default function AdminDashboard() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-mono uppercase text-muted-foreground">Description</label>
+                <label className="text-xs font-mono uppercase text-muted-foreground">Description 🇬🇧</label>
                 <textarea
-                  rows={3}
-                  value={expForm.description}
-                  onChange={(e) => setExpForm({ ...expForm, description: e.target.value })}
+                  rows={2}
+                  value={parseBilingual(expForm.description as string, 'en')}
+                  onChange={(e) => {
+                    const fr = parseBilingual(expForm.description as string, 'fr')
+                    setExpForm({ ...expForm, description: formatBilingual(e.target.value, fr) })
+                  }}
+                  placeholder="Description in English..."
+                  className="w-full px-3.5 py-2 rounded-xl border border-border bg-background/50 font-mono text-sm focus:border-primary focus:outline-none"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-mono uppercase text-muted-foreground">Description 🇫🇷</label>
+                <textarea
+                  rows={2}
+                  value={parseBilingual(expForm.description as string, 'fr')}
+                  onChange={(e) => {
+                    const en = parseBilingual(expForm.description as string, 'en')
+                    setExpForm({ ...expForm, description: formatBilingual(en, e.target.value) })
+                  }}
+                  placeholder="Description en français..."
                   className="w-full px-3.5 py-2 rounded-xl border border-border bg-background/50 font-mono text-sm focus:border-primary focus:outline-none"
                 />
               </div>

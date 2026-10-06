@@ -71,7 +71,7 @@ const fadeInUp = {
 }
 
 export function Experience() {
-  const { t, language } = useSettings()
+  const { t, language, parseBilingual } = useSettings()
   const [experiences, setExperiences] = useState<ExperienceItem[]>(language === 'fr' ? defaultExperiencesFr : defaultExperiencesEn)
 
   useEffect(() => {
@@ -142,13 +142,13 @@ export function Experience() {
 
                 <div className={index % 2 === 0 ? 'md:text-right md:pr-12' : 'md:pl-12'}>
                   <p className="font-mono text-xs text-primary tracking-widest uppercase mb-2">{exp.period}</p>
-                  <h3 className="text-xl md:text-2xl text-foreground font-medium mb-1">{exp.title}</h3>
-                  <p className="text-base text-muted-foreground">{exp.company}</p>
+                  <h3 className="text-xl md:text-2xl text-foreground font-medium mb-1">{parseBilingual(exp.title) || exp.title}</h3>
+                  <p className="text-base text-muted-foreground">{parseBilingual(exp.company) || exp.company}</p>
                 </div>
 
                 <div className={index % 2 === 0 ? 'md:pl-12' : 'md:text-right md:pr-12'}>
                   <p className="text-sm md:text-base text-muted-foreground leading-relaxed mb-4">
-                    {exp.description}
+                    {parseBilingual(exp.description) || exp.description}
                   </p>
                   <div className={`flex flex-wrap gap-2 ${index % 2 === 0 ? '' : 'md:justify-end'}`}>
                     {exp.skills && exp.skills.map((skill) => (
