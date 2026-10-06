@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useSettings } from '@/contexts/SettingsContext'
 
 const fadeInUp = {
   initial: { opacity: 0, y: 40 },
@@ -14,6 +15,8 @@ const links = [
 ]
 
 export function Contact() {
+  const { t } = useSettings()
+
   return (
     <section id="contact" className="section-padding relative overflow-hidden">
       {/* Glowing orbs */}
@@ -24,7 +27,7 @@ export function Contact() {
         <motion.div {...fadeInUp} className="mb-12 md:mb-16">
           <span className="font-mono text-xs text-primary tracking-widest uppercase inline-flex items-center gap-2">
             <span className="w-8 h-px bg-primary" />
-            05 / Contact
+            {t('contact.title')}
           </span>
         </motion.div>
 
@@ -35,8 +38,8 @@ export function Contact() {
           transition={{ duration: 1, ease: 'easeOut' }}
           className="font-display text-6xl md:text-8xl lg:text-[10rem] leading-[0.9] tracking-tighter mb-10 md:mb-14"
         >
-          Let's build<br />
-          <span className="text-gradient">something.</span>
+          {t('contact.heading_1')}<br />
+          <span className="text-gradient">{t('contact.heading_2')}</span>
         </motion.h2>
 
         <motion.p
@@ -88,10 +91,10 @@ export function Contact() {
               Fianarantsoa · Madagascar 🇲🇬
             </p>
             <a
-              href="/admin"
+              href="/admin/login"
               className="text-xs font-mono text-muted-foreground/60 hover:text-primary transition-colors flex items-center gap-1 border border-border/50 px-2.5 py-1 rounded-md hover:border-primary/40"
             >
-              🔒 Admin Portal
+              HSH.dev
             </a>
           </div>
         </motion.footer>
@@ -99,3 +102,4 @@ export function Contact() {
     </section>
   )
 }
+

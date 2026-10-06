@@ -1,14 +1,16 @@
 import { useState } from 'react'
 import { useActiveSection } from '@/hooks/useActiveSection'
 import { useScrollVisibility } from '@/hooks/useScrollVisibility'
+import { useSettings } from '@/contexts/SettingsContext'
 import { cn } from '@/lib/utils'
+import { Moon, Sun, Globe } from 'lucide-react'
 
-const navItems = [
-  { id: 'about', label: 'About' },
-  { id: 'skills', label: 'Skills' },
-  { id: 'projects', label: 'Projects' },
-  { id: 'experience', label: 'Experience' },
-  { id: 'contact', label: 'Contact' },
+const navItemKeys = [
+  { id: 'about', labelKey: 'nav.about' },
+  { id: 'skills', labelKey: 'nav.skills' },
+  { id: 'projects', labelKey: 'nav.projects' },
+  { id: 'experience', labelKey: 'nav.experience' },
+  { id: 'contact', labelKey: 'nav.contact' },
 ]
 
 const socialLinks = [
@@ -21,6 +23,7 @@ export function Navigation() {
   const activeSection = useActiveSection()
   const isVisible = useScrollVisibility()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const { theme, setTheme, language, setLanguage, t } = useSettings()
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId)
@@ -29,6 +32,9 @@ export function Navigation() {
       setMobileMenuOpen(false)
     }
   }
+
+  const toggleTheme = () => setTheme(theme === 'dark' ? 'light' : 'dark');
+  const toggleLanguage = () => setLanguage(language === 'fr' ? 'en' : 'fr');
 
   return (
     <>
@@ -43,29 +49,38 @@ export function Navigation() {
           </button>
           <div
             className={cn(
-              'flex flex-col items-start gap-3 mt-6 transition-all duration-300',
+              'flex flex-col items-start gap-3 mt-6 transition-all duration-300 bg-background/80 backdrop-blur-md p-4 rounded-lg',
               mobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'
             )}
           >
-            {navItems.map((item) => (
+            {navItemKeys.map((item) => (
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
                 className={cn(
-                  'text-sm text-foreground mix-blend-difference transition-all duration-300 relative py-1 font-mono',
+                  'text-sm text-foreground transition-all duration-300 relative py-1 font-mono',
                   'hover:text-primary',
                   activeSection === item.id && 'text-primary'
                 )}
               >
-                {item.label}
+                {t(item.labelKey)}
               </button>
             ))}
             <a
-              href="/admin"
-              className="text-xs text-primary mix-blend-difference py-1 font-mono hover:underline flex items-center gap-1"
+              href="/admin/login"
+              className="text-xs text-primary py-1 font-mono hover:underline flex items-center gap-1"
             >
-              🔒 Admin
+              🔒 {t('admin.login')}
             </a>
+            
+            <div className="flex items-center gap-4 mt-4 pt-4 border-t border-border w-full">
+               <button onClick={toggleTheme} className="text-foreground hover:text-primary transition-colors">
+                  {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+               </button>
+               <button onClick={toggleLanguage} className="text-foreground hover:text-primary transition-colors flex items-center gap-1 text-xs font-mono uppercase font-bold">
+                  <Globe className="w-4 h-4" /> {language}
+               </button>
+            </div>
           </div>
         </div>
 
@@ -98,17 +113,26 @@ export function Navigation() {
               {link.label}
             </a>
           ))}
+          
+          <div className="flex items-center gap-4 ml-4 pl-4 border-l border-border/50">
+               <button onClick={toggleTheme} className="text-foreground mix-blend-difference hover:text-primary transition-colors">
+                  {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+               </button>
+               <button onClick={toggleLanguage} className="text-foreground mix-blend-difference hover:text-primary transition-colors flex items-center gap-1 text-sm font-mono uppercase font-bold">
+                  <Globe className="w-4 h-4" /> {language}
+               </button>
+          </div>
         </div>
       </div>
 
-      {/* Desktop Logo - Top Left */}
+      {/* Desktop Admin Login - Top Left */}
       <div className="hidden md:block fixed top-0 left-0 z-50 p-6 md:p-10">
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="text-sm text-foreground mix-blend-difference hover:text-primary transition-colors font-mono"
+        <a
+          href="/admin/login"
+          className="text-sm text-foreground mix-blend-difference hover:text-primary transition-colors font-mono flex items-center gap-2"
         >
           HSH<span className="text-primary">.</span>dev
-        </button>
+        </a>
       </div>
 
       {/* Desktop Nav - Bottom Right */}
@@ -119,7 +143,7 @@ export function Navigation() {
         )}
       >
         <div className="flex flex-col items-end gap-3">
-          {navItems.map((item) => (
+          {navItemKeys.map((item) => (
             <button
               key={item.id}
               onClick={() => scrollToSection(item.id)}
@@ -130,7 +154,7 @@ export function Navigation() {
               )}
             >
               {activeSection === item.id && <span className="text-primary mr-2">→</span>}
-              {item.label}
+              {t(item.labelKey)}
             </button>
           ))}
         </div>
@@ -138,3 +162,4 @@ export function Navigation() {
     </>
   )
 }
+

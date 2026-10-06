@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { ProjectItem, api, resolveMediaUrl } from '@/lib/api'
 import { ProjectModal } from './ProjectModal'
 import { Play, Sparkles, Eye, ArrowUpRight } from 'lucide-react'
+import { useSettings } from '@/contexts/SettingsContext'
 
 const fallbackProjects: ProjectItem[] = [
   {
@@ -86,6 +87,7 @@ export function Projects() {
   const [projects, setProjects] = useState<ProjectItem[]>(fallbackProjects)
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const { t } = useSettings()
 
   useEffect(() => {
     api.getProjects()
@@ -118,7 +120,7 @@ export function Projects() {
         >
           <span className="font-mono text-xs text-primary tracking-widest uppercase inline-flex items-center gap-2">
             <span className="w-8 h-px bg-primary" />
-            03 / Selected Work
+            {t('projects.title')}
           </span>
         </motion.div>
 
@@ -130,7 +132,8 @@ export function Projects() {
           className="flex flex-col md:flex-row md:items-end justify-between mb-16 md:mb-24 gap-4"
         >
           <h2 className="font-display text-5xl md:text-7xl lg:text-8xl tracking-tighter">
-            Projects<span className="text-primary">.</span>
+            {t('projects.heading_1')}<br />
+            <span className="text-primary">{t('projects.heading_2')}.</span>
           </h2>
           <p className="font-mono text-xs md:text-sm text-muted-foreground">
             ⚡ Cliquez sur un projet pour lancer sa présentation vidéo & galerie
@@ -243,3 +246,4 @@ export function Projects() {
     </section>
   )
 }
+

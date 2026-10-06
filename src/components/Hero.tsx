@@ -1,11 +1,13 @@
 import { motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
+import { useSettings } from '@/contexts/SettingsContext'
 import heroBg from '@/assets/hero-bg.webp'
 
 export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null)
   const [rotate, setRotate] = useState({ x: 0, y: 0 })
   const [isHovering, setIsHovering] = useState(false)
+  const { t } = useSettings()
 
   useEffect(() => {
     const el = containerRef.current
@@ -84,7 +86,7 @@ export function Hero() {
           >
             <span className="font-mono text-xs md:text-sm text-primary tracking-widest uppercase inline-flex items-center gap-2">
               <span className="w-8 h-px bg-primary" />
-              Portfolio / 2025
+              {t('hero.portfolio')}
             </span>
           </motion.div>
 
@@ -106,15 +108,15 @@ export function Hero() {
             className="grid md:grid-cols-2 gap-6 mb-8"
           >
             <div>
-              <p className="font-mono text-xs text-muted-foreground tracking-widest uppercase mb-2">Role</p>
+              <p className="font-mono text-xs text-muted-foreground tracking-widest uppercase mb-2">{t('hero.role_title')}</p>
               <p className="text-lg md:text-xl text-foreground/90">
-                Junior Full-Stack Developer
+                {t('hero.role')}
               </p>
             </div>
             <div>
-              <p className="font-mono text-xs text-muted-foreground tracking-widest uppercase mb-2">Based in</p>
+              <p className="font-mono text-xs text-muted-foreground tracking-widest uppercase mb-2">{t('hero.based_in')}</p>
               <p className="text-lg md:text-xl text-foreground/90">
-                Fianarantsoa, Madagascar 🇲🇬
+                {t('hero.location')}
               </p>
             </div>
           </motion.div>
@@ -125,8 +127,7 @@ export function Hero() {
             transition={{ delay: 0.8, duration: 0.8 }}
             className="text-base md:text-lg text-muted-foreground max-w-md leading-relaxed mb-10"
           >
-            Crafting <span className="text-primary">secure</span>, <span className="text-secondary-glow">scalable</span> web applications
-            with a user-centered approach — from elegant interfaces to robust backends.
+            {t('hero.desc_p1')} <span className="text-primary">{t('hero.desc_secure')}</span>{t('hero.desc_p2')}<span className="text-secondary-glow">{t('hero.desc_scalable')}</span>{t('hero.desc_p3')}
           </motion.p>
         </div>
       </div>
@@ -139,10 +140,11 @@ export function Hero() {
         className="absolute bottom-10 left-1/2 -translate-x-1/2 font-mono text-xs text-muted-foreground tracking-widest"
       >
         <div className="flex flex-col items-center gap-2 animate-float">
-          <span>SCROLL</span>
+          <span>{t('hero.scroll')}</span>
           <div className="w-px h-12 bg-gradient-to-b from-primary to-transparent" />
         </div>
       </motion.div>
     </section>
   )
 }
+

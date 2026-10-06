@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { api, SkillItem } from '@/lib/api'
+import { useSettings } from '@/contexts/SettingsContext'
 
 const defaultGroups = [
   {
@@ -34,6 +35,7 @@ const fadeInUp = {
 
 export function Skills() {
   const [skillGroups, setSkillGroups] = useState(defaultGroups)
+  const { t } = useSettings()
 
   useEffect(() => {
     api.getSkills()
@@ -65,7 +67,7 @@ export function Skills() {
         <motion.div {...fadeInUp} className="mb-12 md:mb-16">
           <span className="font-mono text-xs text-primary tracking-widest uppercase inline-flex items-center gap-2">
             <span className="w-8 h-px bg-primary" />
-            02 / Stack
+            {t('skills.title')}
           </span>
         </motion.div>
 
@@ -73,8 +75,8 @@ export function Skills() {
           {...fadeInUp}
           className="font-display text-5xl md:text-7xl lg:text-8xl tracking-tighter mb-16 md:mb-20"
         >
-          Skills &<br />
-          <span className="text-gradient">Technologies</span>
+          {t('skills.heading_1')}<br />
+          <span className="text-gradient">{t('skills.heading_2')}</span>
         </motion.h2>
 
         <div className="space-y-12 md:space-y-16">
@@ -115,3 +117,4 @@ export function Skills() {
     </section>
   )
 }
+

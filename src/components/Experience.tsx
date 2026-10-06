@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { api, ExperienceItem } from '@/lib/api'
+import { useSettings } from '@/contexts/SettingsContext'
 
 const defaultExperiences: ExperienceItem[] = [
   {
@@ -41,6 +42,7 @@ const fadeInUp = {
 
 export function Experience() {
   const [experiences, setExperiences] = useState<ExperienceItem[]>(defaultExperiences)
+  const { t } = useSettings()
 
   useEffect(() => {
     api.getExperiences()
@@ -56,7 +58,7 @@ export function Experience() {
         <motion.div {...fadeInUp} className="mb-12 md:mb-16">
           <span className="font-mono text-xs text-primary tracking-widest uppercase inline-flex items-center gap-2">
             <span className="w-8 h-px bg-primary" />
-            04 / Journey
+            {t('exp.title')}
           </span>
         </motion.div>
 
@@ -64,7 +66,8 @@ export function Experience() {
           {...fadeInUp}
           className="font-display text-5xl md:text-7xl lg:text-8xl tracking-tighter mb-16 md:mb-24"
         >
-          Experience<span className="text-primary">.</span>
+          {t('exp.heading_1')}<br />
+          <span className="text-primary">{t('exp.heading_2')}.</span>
         </motion.h2>
 
         <div className="relative">
@@ -113,3 +116,4 @@ export function Experience() {
     </section>
   )
 }
+

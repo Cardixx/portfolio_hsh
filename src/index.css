@@ -205,3 +205,40 @@
 .project-card:hover {
   transform: translateY(-6px);
 }
+
+/* Light Mode Variables */
+.light {
+  --background: 210 40% 98%;
+  --foreground: 230 25% 5%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 230 25% 5%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 230 25% 5%;
+
+  --primary: 217 91% 60%;
+  --primary-foreground: 210 40% 98%;
+  --primary-glow: 217 91% 70%;
+
+  --secondary: 270 70% 60%;
+  --secondary-foreground: 210 40% 98%;
+  --secondary-glow: 280 80% 70%;
+
+  --muted: 210 20% 90%;
+  --muted-foreground: 220 15% 40%;
+
+  --accent: 190 95% 45%;
+  --accent-foreground: 210 40% 98%;
+
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 210 40% 98%;
+
+  --border: 210 20% 85%;
+  --input: 210 20% 85%;
+  --ring: 217 91% 60%;
+
+  --gradient-glow: radial-gradient(circle at 50% 0%, hsl(217 91% 60% / 0.15), transparent 60%);
+  --shadow-glow: 0 0 40px hsl(217 91% 60% / 0.2);
+  --shadow-glow-purple: 0 0 50px hsl(270 70% 60% / 0.2);
+}
