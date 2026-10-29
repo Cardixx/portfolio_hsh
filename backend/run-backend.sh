@@ -14,7 +14,7 @@ fi
 
 echo ""
 echo "🚀 Starting Portfolio Spring Boot Backend..."
-echo "   📊 Database : ${DB_USERNAME:-postgres}@${DB_HOST:-localhost}:${DB_PORT:-5433}/${DB_NAME:-portfolio_db}"
+echo "   📊 Database : ${DB_USERNAME:-postgres}@${DB_HOST:-localhost}:${DB_PORT:-5437}/${DB_NAME:-portfolio_db}"
 echo "   🌐 API Port : ${PORT:-8080}"
 echo ""
 
@@ -22,7 +22,7 @@ cd "$SCRIPT_DIR"
 mvn spring-boot:run \
   -Dspring-boot.run.jvmArguments="\
     -DDB_HOST=${DB_HOST:-localhost} \
-    -DDB_PORT=${DB_PORT:-5433} \
+    -DDB_PORT=${DB_PORT:-5437} \
     -DDB_NAME=${DB_NAME:-portfolio_db} \
     -DDB_USERNAME=${DB_USERNAME:-postgres} \
     -DDB_PASSWORD=${DB_PASSWORD:-postgrespassword} \
